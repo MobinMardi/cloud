@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>mDev - Cloud</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/style.css">
+
+    <script>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+        // Locks scroll while the splash is on screen; script.js removes
+        // this once the reveal finishes. Runs before paint so there is
+        // never a flash of the card underneath.
+        document.documentElement.classList.add("splash-active");
+      })();
+    </script>
+  </head>
+  <body>
+
+    <!-- Splash: wordmark fills in pale -> ink, left to right. Runs on
+         every load, refresh included — no skip/session logic. -->
+    <div class="splash" id="splash" aria-hidden="true">
+      <span class="splash-word">
+        <span class="splash-base">mDev</span>
+        <span class="splash-fill">mDev</span>
+      </span>
+    </div>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <span class="topbar-spacer" aria-hidden="true"></span>
+        <span class="topbar-title">mDev</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"></path></svg>
+          <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Background: faint node network canvas -->
+    <canvas id="network" aria-hidden="true"></canvas>
+
+    <div class="content">
+      <main class="card">
+        <img src="assets/mDev.png" alt="Mobin Mardi" class="avatar" width="120" height="120">
+
+        <h1 class="name">Mobin Mardi</h1>
+        <p class="subline">mDev, Computer Engineering student</p>
+
+        <div class="divider"></div>
+
+        <section class="contact" aria-label="Contact details">
+
+          <div class="contact-row">
+            <span class="label">Email</span>
+            <a class="value" href="mailto:mobinmardi.uni@gmail.com">mobinmardi.uni@gmail.com</a>
+            <button class="icon-btn copy-btn" type="button" data-copy="mobinmardi.uni@gmail.com" aria-label="Copy email address">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+            </button>
+          </div>
+
+          <div class="contact-row">
+            <span class="label">Telegram</span>
+            <a class="value" href="tel:+447536666239">+44 7536 666239</a>
+            <button class="icon-btn copy-btn" type="button" data-copy="+447536666239" aria-label="Copy Telegram number">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+            </button>
+          </div>
+
+          <div class="contact-row">
+            <span class="label">Personal</span>
+            <span class="value censored" id="personalPhone" data-real="+98 902 943 6671">•••• ••• ••••</span>
+            <button class="icon-btn unlock-btn" type="button" id="revealBtn" aria-haspopup="dialog" aria-controls="passcodeModal">
+              <svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-2-2 2 2 0 0 0-2 2 2 2 0 0 0 2 2Zm6-9h-1V6a5 5 0 0 0-10 0h2a3 3 0 0 1 6 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm0 12H6V10h12v10Z"/></svg>
+              <span>Unlock</span>
+            </button>
+          </div>
+
+        </section>
+      </main>
+    </div>
+
+    <!-- Passcode modal -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="passcodeModal">
+        <h2 id="modalTitle">Enter passcode</h2>
+        <p class="modal-sub">Enter the 4-digit code to reveal this number.</p>
+
+        <input
+          class="passcode-input"
+          id="passcodeInput"
+          type="password"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="4"
+          autocomplete="off"
+          aria-describedby="modalError"
+        >
+
+        <p class="modal-error" id="modalError" role="alert">Incorrect code, try again.</p>
+
+        <div class="modal-actions">
+          <button class="btn btn-ghost" type="button" id="modalCancel">Cancel</button>
+          <button class="btn btn-solid" type="button" id="modalSubmit">Unlock</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>
